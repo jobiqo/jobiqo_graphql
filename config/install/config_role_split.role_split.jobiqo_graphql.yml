@@ -1,0 +1,18 @@
+uuid: 9dd65b91-a596-433f-8a85-36bb11db075a
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - jobiqo_graphql
+id: jobiqo_graphql
+label: jobiqo_graphql
+weight: 0
+mode: split
+roles:
+  anonymous:
+    - 'execute graphql requests'
+    - 'execute persisted graphql requests'
+  authenticated:
+    - 'execute graphql requests'
+    - 'execute persisted graphql requests'

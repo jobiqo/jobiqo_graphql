@@ -1,0 +1,127 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  route(path: String!): Response
+  menu(name: String!): Menu
+  currentUser: User
+  termTree(vid: String, maxDepth: Int): [Term]
+  entityDefinition(
+    entity_type: String!
+    bundle: String
+    field_types: FieldTypes
+  ): EntityDefinition
+}
+
+type Mutation
+
+union Content
+
+enum FieldTypes {
+  ALL
+  BASE_FIELDS
+  FIELD_CONFIG
+}
+
+input EntityQueryFilter {
+  field: String!
+  value: [String]!
+  operator: String
+}
+
+interface Response {
+  code: Int!
+}
+
+type RedirectResponse implements Response {
+  code: Int!
+  target: String!
+}
+
+type ErrorResponse implements Response {
+  code: Int!
+  reason: String
+}
+
+type ContentResponse implements Response {
+  code: Int!
+  content: Content
+  errors: [Violation]
+}
+
+scalar Violation
+
+type DateTime {
+  value: String
+}
+
+type Term {
+  tid: Int!
+  label: String!
+  parentId: Int
+}
+
+type Image {
+  url: String!
+}
+
+type Metatag {
+  meta: String
+  value: String
+}
+
+type Menu {
+  name: String!
+  items: [MenuItem]
+}
+
+type MenuItem {
+  title: String!
+  url: Url!
+  children: [MenuItem]
+}
+
+type Url {
+  path: String
+}
+
+type User {
+  id: Int!
+  name: String!
+  email: String
+  roles: [Role]
+}
+
+type Role {
+  target_id: String
+}
+
+type EntityDefinition {
+  label: String
+  fields: [EntityDefinitionField]
+}
+
+type EntityDefinitionField {
+  id: String
+  label: String
+  description: String
+  type: String
+  required: Boolean
+  multiple: Boolean
+  maxNumItems: Int
+  status: Boolean
+  defaultValue: String
+  isReference: Boolean
+  isHidden: Boolean
+  weight: Int
+  settings: [KeyValue]
+}
+
+scalar KeyValue
+
+type LinkItem {
+  url: String
+  text: String
+}

@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the jobiqo graphql module.
+ */
+
+use Drupal\Component\Utility\Crypt;
+
+/**
+ * Implements hook_install().
+ */
+function jobiqo_graphql_install() {
+  // Create a JWT key if not present.
+  $jwt_file_location = \Drupal::configFactory()
+    ->get('key.key.key_jwt')
+    ->get('key_provider_settings.file_location');
+  if (is_string($jwt_file_location) && !file_exists($jwt_file_location)) {
+    $jwt_key = base64_encode(Crypt::randomBytes(64));
+    file_put_contents($jwt_file_location, $jwt_key);
+  }
+}
